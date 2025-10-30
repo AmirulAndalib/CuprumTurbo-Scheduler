@@ -4,7 +4,7 @@ config CpuGovernor.profile {
             multiLoadLimit = true
             multiLoadThres = [80]
             maxMargin = [10]
-            maxLatency = [40]
+            maxLatency = [20]
             maxFreqStep = [200]
         }
         balance = {
@@ -12,21 +12,21 @@ config CpuGovernor.profile {
             multiLoadThres = [50]
             maxMargin = [20]
             maxLatency = [40]
-            maxFreqStep = [200]
+            maxFreqStep = [400]
         }
         performance = {
             multiLoadLimit = false
             multiLoadThres = [0]
             maxMargin = [30]
             maxLatency = [20]
-            maxFreqStep = [200]
+            maxFreqStep = [400]
         }
         fast = {
             multiLoadLimit = false
             multiLoadThres = [0]
             maxMargin = [30]
             maxLatency = [10]
-            maxFreqStep = [200]
+            maxFreqStep = [400]
         }
     }
 }

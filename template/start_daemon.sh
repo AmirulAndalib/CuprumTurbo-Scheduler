@@ -105,7 +105,7 @@ get_mt6895_name() {
 get_config_name() {
     case "$1" in
         canoe*)
-            echo "sdm8elite2"
+            echo "sdm8elite_gen5"
             ;;
         crow*)
             echo "sdm7gen3"
@@ -286,6 +286,9 @@ get_config_name() {
             ;;
         mt6991*)
             echo "dimensity9400"
+            ;;
+        mt6993*)
+            echo "dimensity9500"
             ;;
         kirin970*)
             echo "kirin970"

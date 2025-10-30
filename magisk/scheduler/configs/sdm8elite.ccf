@@ -7,7 +7,7 @@ import "thread/cpu_6_2_e.ccf"
 
 config meta_data {
     name = "Snapdragon8Elite"
-    version = "v1.5.0"
+    version = "v1.5.5"
     author = "chenzyadb"
 }
 
@@ -45,7 +45,7 @@ config CpuGovernor.model {
             perfRatio = 600
             lowPowerFreq = 600
             optimumFreq = 2400
-            modelType = "big-core"
+            modelType = "ultra-core"
             modelFreq = 4320
             modelPower = 7600
         }

@@ -90,7 +90,7 @@ config ThreadSchedOpt.profile {
             {
                 threadName = "*([Ww]ork|[Hh]andle|[Pp]ool|[Mm]essage|[Dd]ispatch|[Ee]xecutor|[Bb]ridge|[Cc]amera)*"
                 heavyCpus = none
-                commonCpus = [0, 1, 2, 3, 4, 5, 6]
+                commonCpus = [2, 3, 4, 5, 6]
             },
             {
                 threadName = "(Mod|Captain|[Tt]hread[-_]|pool-|Chronos.|CRON.|AsyncTask|Timer-)*"
