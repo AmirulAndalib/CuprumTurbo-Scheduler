@@ -1,8 +1,8 @@
 config Trigger.hint.profile {
     durationTimes = {
-        tap = 100
-        swipe = 200
-        gesture = 200
+        tap = 50
+        swipe = 500
+        gesture = 100
         heavyload = 1000
         jank = 50
         bigJank = 100

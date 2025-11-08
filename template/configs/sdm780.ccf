@@ -3,11 +3,12 @@ import "generic/sysfs_opt.ccf"
 import "generic/trigger.ccf"
 import "cpu_governor/cluster_3.ccf"
 import "cpu_governor/expect_power.ccf"
+import "cpu_governor/cpu_states.ccf"
 import "thread/cpu_4_4.ccf"
 
 config meta_data {
     name = "Snapdragon780/780G"
-    version = "v1.5.5"
+    version = "v1.5.9"
     author = "chenzyadb"
 }
 
@@ -63,91 +64,49 @@ config CpuGovernor.model {
 
 function Trigger.hint.onNone {
     set_expect_power(CPU_IDLE_POWER_LIMIT)
-    lib.set_property("cpu.boost", 0)
-    lib.set_property("cpu.extra_margin", 0)
-    lib.set_property("cpu.low_latency", false)
-    lib.set_property("mtk_gpu.min_freq", 0)
-    lib.set_property("mtk_gpu.boost", 0)
-    lib.set_property("mtk_gpu.extra_margin", 0)
-    lib.set_property("mtk_gpu.low_latency", false)
+    set_cpu_state(CPU_NORMAL_STATE)
     lib.set_property("devfreq.ddr.min_freq", 0)
     lib.set_property("devfreq.gpu.min_freq", 0)
 }
 
 function Trigger.hint.onTap {
     set_expect_power(CPU_NORMAL_POWER_LIMIT)
-    lib.set_property("cpu.boost", 20)
-    lib.set_property("cpu.extra_margin", 0)
-    lib.set_property("cpu.low_latency", false)
-    lib.set_property("mtk_gpu.min_freq", 0)
-    lib.set_property("mtk_gpu.boost", 0)
-    lib.set_property("mtk_gpu.extra_margin", 0)
-    lib.set_property("mtk_gpu.low_latency", false)
+    set_cpu_state(CPU_ACTIVATE_STATE)
     lib.set_property("devfreq.ddr.min_freq", 0)
     lib.set_property("devfreq.gpu.min_freq", 0)
 }
 
 function Trigger.hint.onSwipe {
     set_expect_power(CPU_NORMAL_POWER_LIMIT)
-    lib.set_property("cpu.boost", 0)
-    lib.set_property("cpu.extra_margin", 10)
-    lib.set_property("cpu.low_latency", false)
-    lib.set_property("mtk_gpu.min_freq", 0)
-    lib.set_property("mtk_gpu.boost", 0)
-    lib.set_property("mtk_gpu.extra_margin", 0)
-    lib.set_property("mtk_gpu.low_latency", false)
+    set_cpu_state(CPU_HIGH_MARGIN_STATE)
     lib.set_property("devfreq.ddr.min_freq", 0)
     lib.set_property("devfreq.gpu.min_freq", 0)
 }
 
 function Trigger.hint.onGesture {
     set_expect_power(CPU_NORMAL_POWER_LIMIT)
-    lib.set_property("cpu.boost", 20)
-    lib.set_property("cpu.extra_margin", 10)
-    lib.set_property("cpu.low_latency", false)
-    lib.set_property("mtk_gpu.min_freq", 0)
-    lib.set_property("mtk_gpu.boost", 0)
-    lib.set_property("mtk_gpu.extra_margin", 0)
-    lib.set_property("mtk_gpu.low_latency", false)
+    set_cpu_state(CPU_ACTIVATE_STATE)
     lib.set_property("devfreq.ddr.min_freq", 3200)
     lib.set_property("devfreq.gpu.min_freq", 0)
 }
 
 function Trigger.hint.onHeavyload {
     set_expect_power(CPU_NORMAL_POWER_LIMIT)
-    lib.set_property("cpu.boost", 0)
-    lib.set_property("cpu.extra_margin", 20)
-    lib.set_property("cpu.low_latency", false)
-    lib.set_property("mtk_gpu.min_freq", 0)
-    lib.set_property("mtk_gpu.boost", 0)
-    lib.set_property("mtk_gpu.extra_margin", 0)
-    lib.set_property("mtk_gpu.low_latency", false)
+    set_cpu_state(CPU_HIGH_MARGIN_STATE)
     lib.set_property("devfreq.ddr.min_freq", 3200)
     lib.set_property("devfreq.gpu.min_freq", 0)
 }
 
 function Trigger.hint.onJank {
     set_expect_power(CPU_BURST_POWER_LIMIT)
-    lib.set_property("cpu.boost", 40)
-    lib.set_property("cpu.extra_margin", 0)
-    lib.set_property("cpu.low_latency", true)
-    lib.set_property("mtk_gpu.min_freq", 0)
-    lib.set_property("mtk_gpu.boost", 0)
-    lib.set_property("mtk_gpu.extra_margin", 0)
-    lib.set_property("mtk_gpu.low_latency", false)
+    set_cpu_state(CPU_LOW_LATENCY_STATE)
     lib.set_property("devfreq.ddr.min_freq", 4800)
     lib.set_property("devfreq.gpu.min_freq", 0)
 }
 
 function Trigger.hint.onBigJank {
     set_expect_power(CPU_BURST_POWER_LIMIT)
-    lib.set_property("cpu.boost", 40)
-    lib.set_property("cpu.extra_margin", 20)
-    lib.set_property("cpu.low_latency", true)
-    lib.set_property("mtk_gpu.min_freq", 0)
-    lib.set_property("mtk_gpu.boost", 0)
-    lib.set_property("mtk_gpu.extra_margin", 0)
-    lib.set_property("mtk_gpu.low_latency", false)
+    set_cpu_state(CPU_BURST_STATE)
     lib.set_property("devfreq.ddr.min_freq", 4800)
     lib.set_property("devfreq.gpu.min_freq", 0)
 }
@@ -163,8 +122,7 @@ function Thermal.onTempChanged {
     mode = get_scheduler_mode()
     
     lib.set_property("devfreq.ddr.max_freq", 10000)
-    lib.set_property("mtk_gpu.max_freq", 10000)
-
+    
     if (std.equals(mode, POWERSAVE_MODE)) {
         if (std.greater(cpuTemp, 90)) {
             lib.set_property("cpu.max_power", 2000)
